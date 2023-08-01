@@ -1,151 +1,412 @@
-0x00. AirBnB clone - The console
-Creation of a command interpreter to manage the hbnb projects
+AirBnB_clone_v3: RESTful API
+hbnb
 
-alt text
+Table of Contents
+Description
+Purpose
+Requirements
+File Descriptions
+Environmental Variables
+Usage
+Bugs
+Authors
+License
+Description
+hbnb is a full-stack clone of the web application AirBnB. This clone was built in four iterative phases. This version includes completion of Phase 1 from AirBnB_clone_v1: Console and web static, Phase 2 from AirBnB_clone_v2 plus Phase 3, which involves exposing stored objects via a JSON web interface and manipulating objects via a custom RESTful API.
 
-Description of the project
-This is the first step towards building your first full web application: the AirBnB clone. The aim of the project is to deploy a replica of the Airbnb Website using my server. The final version of this project will have:
+Create a custom RESTful API, expose stored objects via JSON web interface, manipulate objects via custom RESTful API
+restful_api
 
-A command interpreter to manipulate data without a visual interface, like a shell (for development and debugging)
-A website (front-end) with static and dynamic functionalities
-A comprehensive database to manage the backend functionalities
-An API that provides a communication interface between the front and backend of the system.
-Resources
-Videos showing examples of how various parts of the project work, listed below:
-HBNB videos
-Holberton Airbnb overview
-The Airbnb Console
-Airbnb ORM
-Airbnb API
-Final product
-Other resource
-cmd module
-packages concept page
-Python packages
-uuid module
-datetime
-unittest module
-args/kwargs
-Python test cheatsheet
-AirBnB website.
-Aims & Objectives of this project
-This will help to be able to manage the objects of our project:
+Links to other versions:
 
-Creation of a new object (ex: a new "User" or a new "Place")
-Retrieval of an object from a file storage, a database etc… 
-Perform operations on objects (count, compute stats, etc…)
-Update attributes of an object
-Destroy an object
-The created objects
-The list of the objects (instances) that can be created are as follows:
+AirBnB_clone_v1: Console and web static
+AirBnB_clone_v2: MySQL, deploy web static, web framework
+AirBnB_clone_v4: Web dynamic (Final version!)
+Purpose
+The purpose of Phase 3 is to learn how to:
 
-BaseModel
-User
-City
-Amenity
-State
-Review
-Place
-Files and Directories
-models directory contains all classes used for the entire project. A class, called “model” in a OOP project is the representation of an object/instance.
-tests directory contains all unit tests.
-console.py file is the entry point of our command interpreter.
-models/base_model.py file is the base class of all our models. It contains common elements:
-attributes: id, created_at and updated_at
-methods: save() and to_json()
-models/engine directory contains all storage classes (using the same prototype). For the moment I will have only one: file_storage.py.
-The project's implementation will happen in the following phases:
+create a RESTful API
+use CORS
+request RESTful API
+retrieve, create, update, delete a resource with HTTP methods
+Requirements
+All files compiled with Ubuntu 14.04 LTS
+Documentation
+Organized files in proper folders
+Python unit tests for all files
+All files must be pep8 compliant
+File Descriptions
+Note: Below highlights only new file additions for Phase 3. For file descriptions from previous phases, click Phase 2 and Phase 1.
 
-Phase One
-The first phase is to manipulate a powerful storage system to give an abstraction between objects and how they are stored and persisted. To achieve this, I will:
+tests - unit test files
+models - contains all class models for AirBnB objects
+engine - contains storage engines
+__init__.py - empty __init__.py file for packages
+file_storage.py - class FileStorage; serializes instances to JSON file and deserializes from a JSON file
+all - returns the dictionary __objects
+new - sets in __objects the obj with key <obj class name>.id
+save - serializes __objects to the JSON file (path: __file_path)
+reload - deserializes the JSON file to __objects
+delete - delete object from __objects if exists
+close - call reload
+db_storage.py - class DBStorage;
+__init__ - initalize instances
+all - return dictionary of instance attributes
+new - add new object to current database session
+save - commit all changes of the current database session
+delete - delete from the current database session obj if not None
+reload - create all tables in database and current database session
+close - close session
+get - retrieves an object
+count - counts number of objects of a class (if given)
+api - contains v1 and v1/views folders
+__init__.py - empty __init__.py file
+v1 - contains app file and views folder
+__init__.py - empty __init__.py file
+app.py - app file
+tear - closes storage engine
+not_found - handles 404 error and gives json formatted response
+views - contains views for AirBnB objects
+__init__.py - create blueprint
+amenities.py - view for Amenity objects that handles all default RestFul API actions
+list_amenities - retrieves a list of all Amenity objects
+get_amenity - retrieves an Amenity object
+delete_amenity - deletes an Amenity object
+create_amenity - creates an Amenity object
+updates_amenity - updates an Amenity object
+cities.py - view for City objects that handles all default RestFul API actions
+list_cities_of_state - retrieves list of of City objects
+create_city - creates a City
+get_city - retrieves a City object
+delete_city - deletes a City object
+updates_city - updates a City object
+index.py - index file
+status - routes to status page
+count - retrieves number of each objects by type
+places.py - view for Place objects that handles all default RestFul API actions
+list_places_of_city - retrieves list of of Place objects in city
+create_place - creates a Place
+get_place - retrieves a Place object
+delete_place - deletes a Place object
+updates_place - updates a Place object
+places_amenities.py - place-amenity view
+list_amenities_of_place - retrieves a list of all Amenity objects of a Place
+create_place_amenity - creates an Amenity
+delete_place_amenity - deletes an Amenity object
+get_place_amenity - retrieves an Amenity object
+places_reviews.py - place-review view
+list_reviews_of_place - retrieves a list of all Review objects of a Place
+create_review - creates a review
+get_review - retrieves a Review object
+delete_review - deletes a Review object
+updates_review - updates a Review object
+states.py - view for State objects that handles all default RestFul API actions
+list_states - retrieves a list of all State objects
+get_state - retrieves a State object
+delete_state - deletes a State object
+create_state - creates a State
+updates_state - updates a State object
+users.py -
+list_users - retrieves list of of User objects
+create_user - creates a User
+get_user - retrieves a User object
+delete_user - deletes a User object
+updates_user - updates a User object
+Environmental Variables
+HBNB_ENV: running environment. It can be “dev” or “test” for the moment (“production” soon!)
+HBNB_MYSQL_USER: the username of your MySQL
+HBNB_MYSQL_PWD: the password of your MySQL
+HBNB_MYSQL_HOST: the hostname of your MySQL
+HBNB_MYSQL_DB: the database name of your MySQL
+HBNB_TYPE_STORAGE: the type of storage used. It can be “file” (using FileStorage) or db (using DBStorage)
+Usage
+Run the following in your terminal:
 
-put in place a parent class (called BaseModel) to take care of the initialization, serialization and deserialization of my future instances
-create a simple flow of serialization/deserialization: Instance <-> Dictionary <-> JSON string <-> file
-create all classes used for AirBnB (User, State, City, Place…) that inherit from BaseModel
-create the first abstracted storage engine of the project: File storage.
-create all unittests to validate all our classes and storage engine
-Create a data model
-Manage (create, update, destroy, etc) objects via a console/command interpreter
-Store and persist objects to files (JSON files)
-Commands Implemented
-Description of the command interpreter
+Test get and count methods for FileStorage and DBStorage
 
-Commands	Description
-quit	This command quits or exits the console
-EOF	This command quits or exits the console interpreter when pressed Ctrl+D
-help or help <command>	Displays all commands or Displays instructions for a specific command (Ex: help or help quit).
-create <class>	Creates an object of type, saves it to a JSON file, and prints the objects ID (Ex: create BaseModel or BaseModel.create())
-show <class> <ID>	Shows string representation of an object (Ex: show BaseModel 1234-1234-1234 or BaseModel.show("1234-1234-1234"))
-destroy <class> <ID>	Deletes an objects based on the class name and id (Ex: destroy BaseModel 1234-1234-1234 or BaseModel.destroy("1234-1234-1234")).
-all or all <class>	Prints all string representations of all objects or Prints all string representations of all objects of a specific class (Ex: all BaseModel or all or User.all()).
-update <class> <id> <attribute name> "<attribute value>"	Updates an object with a certain attribute (new or existing) (Usage: update <class name> <id> <attribute name> "<attribute value>).
-<class>.all()	Same as all <class>
-<class>.count()	Retrieves the number of objects of a certain class (Usage: <class name>.count(), Example: User.count()).
-<class>.show(<ID>)	Same as show <class> <ID>
-<class>.destroy(<ID>)	Same as destroy <class> <ID>
-<class>.update(<ID>, <attribute name>, <attribute value>	Same as update <class> <ID> <attribute name> <attribute value>
-<class>.update(<ID>, <dictionary representation>)	Updates an objects based on a dictionary representation of attribute names and values
-Compilation
-To start up the interpreter, clone this repository, and run the console file on linux as follows:
+user@ubuntu:~/AirBnB_v3$ cat test_get_count.py
+#!/usr/bin/python3
+""" Test .get() and .count() methods
+"""
+from models import storage
 
-Clone this repository: git clone "https://github.com/Dikachis/AirBnB_clone.git"
-Access AirBnb directory: cd AirBnB_clone
-Run hbnb(interactively): ./console and then press enter command
-Run hbnb(non-interactively): echo "<command>" | ./console.py
-$ ./console.py
-(hbnb) help
+print("All objects: {}".format(storage.count()))
+print("State objects: {}".format(storage.count("State")))
 
-Documented commands (type help <topic>):
-========================================
-EOF  help  quit
-(hbnb) 
-(hbnb) 
-(hbnb) quit
-$
-But also in non-interactive mode: (like the Shell project in C)
+first_state_id = list(storage.all("State").values())[0].id
+print("First state: {}".format(storage.get("State", first_state_id)))
 
-$ echo "help" | ./console.py
-(hbnb)
+user@ubuntu:~/AirBnB_v3$
+user@ubuntu:~/AirBnB_v3$ HBNB_MYSQL_USER=hbnb_dev HBNB_MYSQL_PWD=hbnb_dev_pwd HBNB_MYSQL_HOST=localhost HBNB_MYSQL_DB=hbnb_dev_db HBNB_TYPE_STORAGE=db ./test_get_count.py 
+All objects: 1013
+State objects: 27
+First state: [State] (f8d21261-3e79-4f5c-829a-99d7452cd73c) {'name': 'Colorado', 'updated_at': datetime.datetime(2017, 3, 25, 2, 17, 6), 'created_at': datetime.datetime(2017, 3, 25, 2, 17, 6), '_sa_instance_state': <sqlalchemy.orm.state.InstanceState object at 0x7fc0103a8e80>, 'id': 'f8d21261-3e79-4f5c-829a-99d7452cd73c'}
+user@ubuntu:~/AirBnB_v3$
+user@ubuntu:~/AirBnB_v3$ ./test_get_count.py 
+All objects: 19
+State objects: 5
+First state: [State] (af14c85b-172f-4474-8a30-d4ec21f9795e) {'updated_at': datetime.datetime(2017, 4, 13, 17, 10, 22, 378824), 'name': 'Arizona', 'id': 'af14c85b-172f-4474-8a30-d4ec21f9795e', 'created_at': datetime.datetime(2017, 4, 13, 17, 10, 22, 378763)}
+....
 
-Documented commands (type help <topic>):
-========================================
-EOF  help  quit
-(hbnb) 
-$
-$ cat test_help
-help
-$
-$ cat test_help | ./console.py
-(hbnb)
+Check status of API Run this in one terminal window:
 
-Documented commands (type help <topic>):
-========================================
-EOF  help  quit
-(hbnb)
-$
-guillaume@ubuntu:~/AirBnB$ ./console.py
-(hbnb) all MyModel
-** class doesn't exist **
-(hbnb) show BaseModel
-** instance id missing **
-(hbnb) show BaseModel My_First_Model
-** no instance found **
-(hbnb) create BaseModel
-49faff9a-6318-451f-87b6-910505c55907
-(hbnb) all BaseModel
-["[BaseModel] (49faff9a-6318-451f-87b6-910505c55907) {'created_at': datetime.datetime(2017, 10, 2, 3, 10, 25, 903293), 'id': '49faff9a-6318-451f-87b6-910505c55907', 'updated_at': datetime.datetime(2017, 10, 2, 3, 10, 25, 903300)}"]
-(hbnb) show BaseModel 49faff9a-6318-451f-87b6-910505c55907
-[BaseModel] (49faff9a-6318-451f-87b6-910505c55907) {'created_at': datetime.datetime(2017, 10, 2, 3, 10, 25, 903293), 'id': '49faff9a-6318-451f-87b6-910505c55907', 'updated_at': datetime.datetime(2017, 10, 2, 3, 10, 25, 903300)}
-(hbnb) destroy
-** class name missing **
-(hbnb) update BaseModel 49faff9a-6318-451f-87b6-910505c55907 first_name "Betty"
-(hbnb) show BaseModel 49faff9a-6318-451f-87b6-910505c55907
-[BaseModel] (49faff9a-6318-451f-87b6-910505c55907) {'first_name': 'Betty', 'id': '49faff9a-6318-451f-87b6-910505c55907', 'created_at': datetime.datetime(2017, 10, 2, 3, 10, 25, 903293), 'updated_at': datetime.datetime(2017, 10, 2, 3, 11, 3, 49401)}
-(hbnb) create BaseModel
-2dd6ef5c-467c-4f82-9521-a772ea7d84e9
-(hbnb) all BaseModel
-["[BaseModel] (2dd6ef5c-467c-4f82-9521-a772ea7d84e9) {'id': '2dd6ef5c-467c-4f82-9521-a772ea7d84e9', 'created_at': datetime.datetime(2017, 10, 2, 3, 11, 23, 639717), 'updated_at': datetime.datetime(2017, 10, 2, 3, 11, 23, 639724)}", "[BaseModel] (49faff9a-6318-451f-87b6-910505c55907) {'first_name': 'Betty', 'id': '49faff9a-6318-451f-87b6-910505c55907', 'created_at': datetime.datetime(2017, 10, 2, 3, 10, 25, 903293), 'updated_at': datetime.datetime(2017, 10, 2, 3, 11, 3, 49401)}"]
-(hbnb) destroy BaseModel 49faff9a-6318-451f-87b6-910505c55907
-(hbnb) show BaseModel 49faff9a-6318-451f-87b6-910505c55907
-** no instance found **
-(hbnb) 
+user@ubuntu:~/AirBnB_v3$ HBNB_MYSQL_USER=hbnb_dev HBNB_MYSQL_PWD=hbnb_dev_pwd HBNB_MYSQL_HOST=localhost HBNB_MYSQL_DB=hbnb_dev_db HBNB_TYPE_STORAGE=db HBNB_API_HOST=0.0.0.0 HBNB_API_PORT=5000 python3 -m api.v1.app
+ * Running on http://0.0.0.0:5000/ (Press CTRL+C to quit)
+...
+And this in another terminal window:
+
+user@ubuntu:~/AirBnB_v3$ curl -X GET http://0.0.0.0:5000/api/v1/status
+{
+  "status": "OK"
+}
+user@ubuntu:~/AirBnB_v3$ curl -X GET -s http://0.0.0.0:5000/api/v1/status -vvv 2>&1 | grep Content-Type
+< Content-Type: application/json
+Check number of objects by type
+
+user@ubuntu:~/AirBnB_v3$ curl -X GET http://0.0.0.0:5000/api/v1/stats
+{
+  "amenities": 47, 
+  "cities": 36, 
+  "places": 154, 
+  "reviews": 718, 
+  "states": 27, 
+  "users": 31
+}
+Create JSON formatted 404 status code response
+
+user@ubuntu:~/AirBnB_v3$ curl -X GET http://0.0.0.0:5000/api/v1/nop
+{
+  "error": "Not found"
+}
+user@ubuntu:~/AirBnB_v3$ curl -X GET http://0.0.0.0:5000/api/v1/nop -vvv
+*   Trying 0.0.0.0...
+* TCP_NODELAY set
+* Connected to 0.0.0.0 (127.0.0.1) port 5000 (#0)
+> GET /api/v1/nop HTTP/1.1
+> Host: 0.0.0.0:5000
+> User-Agent: curl/7.51.0
+> Accept: */*
+> 
+* HTTP 1.0, assume close after body
+< HTTP/1.0 404 NOT FOUND
+< Content-Type: application/json
+< Content-Length: 27
+< Server: Werkzeug/0.12.1 Python/3.4.3
+< Date: Fri, 14 Apr 2017 23:43:24 GMT
+< 
+{
+  "error": "Not found"
+}
+Run HTTP methods for State
+
+user@ubuntu:~/AirBnB_v3$ curl -X GET http://0.0.0.0:5000/api/v1/states/
+[
+  {
+    "__class__": "State", 
+    "created_at": "2017-04-14T00:00:02", 
+    "id": "8f165686-c98d-46d9-87d9-d6059ade2d99", 
+    "name": "Louisiana", 
+    "updated_at": "2017-04-14T00:00:02"
+  }, 
+  {
+    "__class__": "State", 
+    "created_at": "2017-04-14T16:21:42", 
+    "id": "1a9c29c7-e39c-4840-b5f9-74310b34f269", 
+    "name": "Arizona", 
+    "updated_at": "2017-04-14T16:21:42"
+  }, 
+...
+user@ubuntu:~/AirBnB_v3$ curl -X GET http://0.0.0.0:5000/api/v1/states/8f165686-c98d-46d9-87d9-d6059ade2d99
+ {
+  "__class__": "State", 
+  "created_at": "2017-04-14T00:00:02", 
+  "id": "8f165686-c98d-46d9-87d9-d6059ade2d99", 
+  "name": "Louisiana", 
+  "updated_at": "2017-04-14T00:00:02"
+} 
+user@ubuntu:~/AirBnB_v3$ curl -X POST http://0.0.0.0:5000/api/v1/states/ -H "Content-Type: application/json" -d '{"name": "California"}' -vvv
+*   Trying 0.0.0.0...
+* TCP_NODELAY set
+* Connected to 0.0.0.0 (127.0.0.1) port 5000 (#0)
+> POST /api/v1/states/ HTTP/1.1
+> Host: 0.0.0.0:5000
+> User-Agent: curl/7.51.0
+> Accept: */*
+> Content-Type: application/json
+> Content-Length: 22
+> 
+* upload completely sent off: 22 out of 22 bytes
+* HTTP 1.0, assume close after body
+< HTTP/1.0 201 CREATED
+< Content-Type: application/json
+< Content-Length: 195
+< Server: Werkzeug/0.12.1 Python/3.4.3
+< Date: Sat, 15 Apr 2017 01:30:27 GMT
+< 
+{
+  "__class__": "State", 
+  "created_at": "2017-04-15T01:30:27.557877", 
+  "id": "feadaa73-9e4b-4514-905b-8253f36b46f6", 
+  "name": "California", 
+  "updated_at": "2017-04-15T01:30:27.558081"
+}
+* Curl_http_done: called premature == 0
+* Closing connection 0
+user@ubuntu:~/AirBnB_v3$ curl -X PUT http://0.0.0.0:5000/api/v1/states/feadaa73-9e4b-4514-905b-8253f36b46f6 -H "Content-Type: application/json" -d '{"name": "California is so cool"}'
+{
+  "__class__": "State", 
+  "created_at": "2017-04-15T01:30:28", 
+  "id": "feadaa73-9e4b-4514-905b-8253f36b46f6", 
+  "name": "California is so cool", 
+  "updated_at": "2017-04-15T01:51:08.044996"
+}
+user@ubuntu:~/AirBnB_v3$ curl -X GET http://0.0.0.0:5000/api/v1/states/feadaa73-9e4b-4514-905b-8253f36b46f6
+{
+  "__class__": "State", 
+  "created_at": "2017-04-15T01:30:28", 
+  "id": "feadaa73-9e4b-4514-905b-8253f36b46f6", 
+  "name": "California is so cool", 
+  "updated_at": "2017-04-15T01:51:08"
+}
+user@ubuntu:~/AirBnB_v3$ curl -X DELETE http://0.0.0.0:5000/api/v1/states/feadaa73-9e4b-4514-905b-8253f36b46f6
+{}
+user@ubuntu:~/AirBnB_v3$ curl -X GET http://0.0.0.0:5000/api/v1/states/feadaa73-9e4b-4514-905b-8253f36b46f6
+{
+  "error": "Not found"
+}
+Run HTTP methods for City
+
+user@ubuntu:~/AirBnB_v3$ curl -X GET http://0.0.0.0:5000/api/v1/states/not_an_id/cities/
+{
+  "error": "Not found"
+}
+user@ubuntu:~/AirBnB_v3$ curl -X GET http://0.0.0.0:5000/api/v1/states/2b9a4627-8a9e-4f32-a752-9a84fa7f4efd/cities
+[
+  {
+    "__class__": "City", 
+    "created_at": "2017-03-25T02:17:06", 
+    "id": "1da255c0-f023-4779-8134-2b1b40f87683", 
+    "name": "New Orleans", 
+    "state_id": "2b9a4627-8a9e-4f32-a752-9a84fa7f4efd", 
+    "updated_at": "2017-03-25T02:17:06"
+  }, 
+  {
+    "__class__": "City", 
+    "created_at": "2017-03-25T02:17:06", 
+    "id": "45903748-fa39-4cd0-8a0b-c62bfe471702", 
+    "name": "Lafayette", 
+    "state_id": "2b9a4627-8a9e-4f32-a752-9a84fa7f4efd", 
+    "updated_at": "2017-03-25T02:17:06"
+  }, 
+  {
+    "__class__": "City", 
+    "created_at": "2017-03-25T02:17:06", 
+    "id": "e4e40a6e-59ff-4b4f-ab72-d6d100201588", 
+    "name": "Baton rouge", 
+    "state_id": "2b9a4627-8a9e-4f32-a752-9a84fa7f4efd", 
+    "updated_at": "2017-03-25T02:17:06"
+  }
+]
+user@ubuntu:~/AirBnB_v3$ curl -X GET http://0.0.0.0:5000/api/v1/cities/1da255c0-f023-4779-8134-2b1b40f87683
+{
+  "__class__": "City", 
+  "created_at": "2017-03-25T02:17:06", 
+  "id": "1da255c0-f023-4779-8134-2b1b40f87683", 
+  "name": "New Orleans", 
+  "state_id": "2b9a4627-8a9e-4f32-a752-9a84fa7f4efd", 
+  "updated_at": "2017-03-25T02:17:06"
+}
+user@ubuntu:~/AirBnB_v3$ curl -X POST http://0.0.0.0:5000/api/v1/states/2b9a4627-8a9e-4f32-a752-9a84fa7f4efd/cities -H "Content-Type: application/json" -d '{"name": "Alexandria"}' -vvv
+*   Trying 0.0.0.0...
+* TCP_NODELAY set
+* Connected to 0.0.0.0 (127.0.0.1) port 5000 (#0)
+> POST /api/v1/states/2b9a4627-8a9e-4f32-a752-9a84fa7f4efd/cities/ HTTP/1.1
+> Host: 0.0.0.0:5000
+> User-Agent: curl/7.51.0
+> Accept: */*
+> Content-Type: application/json
+> Content-Length: 22
+> 
+* upload completely sent off: 22 out of 22 bytes
+* HTTP 1.0, assume close after body
+< HTTP/1.0 201 CREATED
+< Content-Type: application/json
+< Content-Length: 249
+< Server: Werkzeug/0.12.1 Python/3.4.3
+< Date: Sun, 16 Apr 2017 03:14:05 GMT
+< 
+{
+  "__class__": "City", 
+  "created_at": "2017-04-16T03:14:05.655490", 
+  "id": "b75ae104-a8a3-475e-bf74-ab0a066ca2af", 
+  "name": "Alexandria", 
+  "state_id": "2b9a4627-8a9e-4f32-a752-9a84fa7f4efd", 
+  "updated_at": "2017-04-16T03:14:05.655748"
+}
+* Curl_http_done: called premature == 0
+* Closing connection 0
+user@ubuntu:~/AirBnB_v3$ curl -X PUT http://0.0.0.0:5000/api/v1/cities/b75ae104-a8a3-475e-bf74-ab0a066ca2af -H "Content-Type: application/json" -d '{"name": "Bossier City"}'
+{
+  "__class__": "City", 
+  "created_at": "2017-04-16T03:14:06", 
+  "id": "b75ae104-a8a3-475e-bf74-ab0a066ca2af", 
+  "name": "Bossier City", 
+  "state_id": "2b9a4627-8a9e-4f32-a752-9a84fa7f4efd", 
+  "updated_at": "2017-04-16T03:15:12.895894"
+}
+user@ubuntu:~/AirBnB_v3$ curl -X GET http://0.0.0.0:5000/api/v1/cities/b75ae104-a8a3-475e-bf74-ab0a066ca2af
+{
+  "__class__": "City", 
+  "created_at": "2017-04-16T03:14:06", 
+  "id": "b75ae104-a8a3-475e-bf74-ab0a066ca2af", 
+  "name": "Bossier City", 
+  "state_id": "2b9a4627-8a9e-4f32-a752-9a84fa7f4efd", 
+  "updated_at": "2017-04-16T03:15:13"
+}
+user@ubuntu:~/AirBnB_v3$ curl -X DELETE http://0.0.0.0:5000/api/v1/cities/b75ae104-a8a3-475e-bf74-ab0a066ca2af
+{}
+user@ubuntu:~/AirBnB_v3$ curl -X GET http://0.0.0.0:5000/api/v1/cities/b75ae104-a8a3-475e-bf74-ab0a066ca2af
+{
+  "error": "Not found"
+}
+Using CORS
+
+user@ubuntu:~/AirBnB_v3$ curl -X GET http://0.0.0.0:5000/api/v1/cities/1da255c0-f023-4779-8134-2b1b40f87683 -vvv
+*   Trying 0.0.0.0...
+* TCP_NODELAY set
+* Connected to 0.0.0.0 (127.0.0.1) port 5000 (#0)
+> GET /api/v1/states/2b9a4627-8a9e-4f32-a752-9a84fa7f4efd/cities/1da255c0-f023-4779-8134-2b1b40f87683 HTTP/1.1
+> Host: 0.0.0.0:5000
+> User-Agent: curl/7.51.0
+> Accept: */*
+> 
+* HTTP 1.0, assume close after body
+< HTTP/1.0 200 OK
+< Content-Type: application/json
+< Access-Control-Allow-Origin: 0.0.0.0
+< Content-Length: 236
+< Server: Werkzeug/0.12.1 Python/3.4.3
+< Date: Sun, 16 Apr 2017 04:20:13 GMT
+< 
+{
+  "__class__": "City", 
+  "created_at": "2017-03-25T02:17:06", 
+  "id": "1da255c0-f023-4779-8134-2b1b40f87683", 
+  "name": "New Orleans", 
+  "state_id": "2b9a4627-8a9e-4f32-a752-9a84fa7f4efd", 
+  "updated_at": "2017-03-25T02:17:06"
+}
+* Curl_http_done: called premature == 0
+* Closing connection 0
+Bugs
+At this time, there are no known bugs.
+
+Authors
+Phase 3:
+
+John Bosco | GitHub | 
+Bromic Ouma | GitHub |
+ 
+Note: As per Holberton's requirements, we practice working with new Phase 1 and 2 codebases in our Phase 3 version.
+
+hbnb is open source and free to download and use
